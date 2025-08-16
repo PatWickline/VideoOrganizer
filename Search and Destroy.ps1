@@ -36,6 +36,7 @@ $metaHashSet = $metaData | Select-Object -ExpandProperty Hash | Sort-Object -Uni
 $searchFiles = Get-ChildItem -Path $SearchDir -Recurse -File
 
 foreach ($file in $searchFiles) {
+    Write-Host -NoNewline "."  # Print a dot for each file processed
     try {
         $fileHash = (Get-FileHash $file.FullName -Algorithm SHA256).Hash
         if ($metaHashSet -contains $fileHash) {
@@ -48,5 +49,6 @@ foreach ($file in $searchFiles) {
     }
 }
 
+Write-Host "" # New line after dots
 Log "Operation complete."
 Log "Total files deleted: $deletedCount"
