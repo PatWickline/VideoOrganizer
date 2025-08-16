@@ -1,8 +1,10 @@
 # === CONFIGURATION ===
 param (
-    [string]$MetaDataFile = ".\TargetFilesMetaData.csv",    # Metadata CSV file created by ExtractMetaData.ps1
-    [string]$SearchDir = "E:\Pat\Backup 3-1-25" # Directory tree to search and delete matching files
-    # test folder [string]$SearchDir = "C:\Users\12068\Documents\Powershell\Test Folder with Files to delete" # Directory tree to search and delete matching files
+    [string]$MetaDataFile = "$PSScriptRoot\TargetFilesMetaData.csv",    # Metadata CSV file created by ExtractMetaData.ps1
+    #[string]$SearchDir = "E:\Pat\Backup 3-1-25" # Directory tree to search and delete matching files
+    
+    #test folder
+    [string]$SearchDir = "C:\Users\12068\Documents\Powershell\Test Folder with Files to delete" # Directory tree to search and delete matching files
 )
 $LogFile = ".\DeleteLog_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
 $videoExtensions = @("*.mp4", "*.mov", "*.avi", "*.mkv", "*.wmv")

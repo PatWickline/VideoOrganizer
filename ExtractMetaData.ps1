@@ -1,6 +1,6 @@
 param (
     [string]$TargetDir = "C:\Users\12068\Documents\OrganizedVideos\Exclude Files",
-    [string]$MetaDataFile = ".\TargetFilesMetaData.csv"
+    [string]$MetaDataFile = "$PSScriptRoot\TargetFilesMetaData.csv"
 )
 
 # Extract metadata sufficient to identify each file (excluding FullName, CreationTime, LastWriteTime)
