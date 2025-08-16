@@ -1,17 +1,14 @@
 param (
-    [string]$TargetDir = "C:\Users\12068\Documents\Powershell\Test Folder with Files to delete",
+    [string]$TargetDir = "C:\Users\12068\Documents\OrganizedVideos\Exclude Files",
     [string]$MetaDataFile = ".\TargetFilesMetaData.csv"
 )
 
-# Extract metadata sufficient to identify each file
+# Extract metadata sufficient to identify each file (excluding FullName, CreationTime, LastWriteTime)
 $files = Get-ChildItem -Path $TargetDir -Recurse -File
 
 $metaData = $files | Select-Object `
     Name,                # File name
-    FullName,            # Full path
     Length,              # Size in bytes
-    CreationTime,        # When file was created
-    LastWriteTime,       # Last modified time
     Extension,           # File extension
     @{Name="Hash";Expression={ (Get-FileHash $_.FullName -Algorithm SHA256).Hash }} # SHA256 hash for uniqueness
 
