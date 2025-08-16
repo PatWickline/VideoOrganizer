@@ -25,20 +25,23 @@ $sourceFiles = Get-ChildItem -Path $SourceDir -File | Select-Object -ExpandPrope
 Log "Scanning source directory: $SourceDir"
 Log "Found $($sourceFiles.Count) files to match."
 
+$deletedCount = 0
+
 foreach ($fileName in $sourceFiles) {
     try {
-        $matches = Get-ChildItem -Path $TargetDir -Recurse -File -Filter $fileName
-        if ($matches.Count -eq 0) {
+        $foundFiles = Get-ChildItem -Path $TargetDir -Recurse -File -Filter $fileName
+        if ($foundFiles.Count -eq 0) {
             Log "No match found for '$fileName'."
             continue
         }
 
-        foreach ($match in $matches) {
+        foreach ($file in $foundFiles) {
             try {
-                Remove-Item -Path $match.FullName -Force
-                Log "Deleted: $($match.FullName)"
+                Remove-Item -Path $file.FullName -Force
+                Log "Deleted: $($file.FullName)"
+                $deletedCount++
             } catch {
-                Log "ERROR deleting '$($match.FullName)': $_"
+                Log "ERROR deleting '$($file.FullName)': $_"
             }
         }
     } catch {
@@ -47,3 +50,4 @@ foreach ($fileName in $sourceFiles) {
 }
 
 Log "Operation complete."
+Log "Total files deleted: $deletedCount"
