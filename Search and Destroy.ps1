@@ -2,8 +2,10 @@
 param (
     [string]$MetaDataFile = ".\TargetFilesMetaData.csv",    # Metadata CSV file created by ExtractMetaData.ps1
     [string]$SearchDir = "E:\Pat\Backup 3-1-25" # Directory tree to search and delete matching files
+    # test folder [string]$SearchDir = "C:\Users\12068\Documents\Powershell\Test Folder with Files to delete" # Directory tree to search and delete matching files
 )
 $LogFile = ".\DeleteLog_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
+$videoExtensions = @("*.mp4", "*.mov", "*.avi", "*.mkv", "*.wmv")
 
 # === LOGGING FUNCTION ===
 function Log {
@@ -32,8 +34,11 @@ $deletedCount = 0
 # Build a lookup table for metadata hashes
 $metaHashSet = $metaData | Select-Object -ExpandProperty Hash | Sort-Object -Unique
 
-# Search the specified directory tree for files matching the metadata hashes
-$searchFiles = Get-ChildItem -Path $SearchDir -Recurse -File
+# Search the specified directory tree for files matching the video extensions
+$searchFiles = @()
+foreach ($ext in $videoExtensions) {
+    $searchFiles += Get-ChildItem -Path $SearchDir -Recurse -File -Filter $ext
+}
 
 foreach ($file in $searchFiles) {
     Write-Host -NoNewline "."  # Print a dot for each file processed
